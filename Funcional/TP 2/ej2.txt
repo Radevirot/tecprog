@@ -1,0 +1,6 @@
+Guía 2 Ejercicio 2:
+
+Se comienza dándole el valor 9 a X, luego
+se multiplica ese 9 por el resultado de un let,
+que asigna a X el valor 9/3 = 3 y luego suma 3+3, por
+lo que la multiplicación es 9*6, que es 54.

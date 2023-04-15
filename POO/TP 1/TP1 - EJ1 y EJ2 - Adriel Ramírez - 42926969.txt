@@ -1,0 +1,68 @@
+public class Persona {
+
+	private String nombre;
+	private int doc;
+	private Calendar nac;
+	
+	Persona(String nombre, int doc, Calendar nac){
+		
+		this.nombre=nombre; this.doc=doc;
+		this.nac=nac;
+		
+	}
+	
+	String obtenerNombreYDoc() {
+		
+		return "Nombre: "+nombre+", DNI: "+doc;
+		
+	}
+	
+	String obtenerEdad() {
+		
+		
+		Calendar actual = Calendar.getInstance();
+		
+		int edad = actual.get(Calendar.YEAR) - this.nac.get(Calendar.YEAR);
+
+		if (this.nac.get(Calendar.MONTH)>actual.get(Calendar.MONTH)) edad-=1;
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		
+		return nombre + ": " + edad + " años. " + sdf.format(new Date(this.nac.getTimeInMillis()));
+		
+		
+		
+		
+	}
+	
+	
+}
+
+
+public class Main {
+
+	public static void main(String[] args) {
+		
+		Calendar fechanac = Calendar.getInstance();
+		fechanac.set(2001, 3-1, 4); //Resto 1 al mes porque calendar empieza a contar desde 0
+
+		
+		Persona oPersona = new Persona("Adriel Ramirez",42926969,fechanac);
+		Calendar f = Calendar.getInstance();
+		f.set(2001,5-1,18);
+		
+		Persona oPersona2 = new Persona("Matías Schvabauer",43235111,f);
+
+		System.out.println(oPersona.obtenerEdad());
+		
+		System.out.println(oPersona2.obtenerEdad());
+		
+	}
+
+}
+
+
+
+SALIDA DE CONSOLA:
+Adriel Ramirez: 21 años. 04/03/2001
+Matías Schvabauer: 20 años. 18/05/2001

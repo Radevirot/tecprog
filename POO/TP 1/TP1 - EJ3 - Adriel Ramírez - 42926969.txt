@@ -1,0 +1,177 @@
+public class Alumno {
+	
+	private Calendar fecha_inscripcion;
+	private Persona oPersona;
+	private Carrera oCarrera;
+	
+	public Alumno(Persona oPersona, Carrera oCarrera, Calendar insc) {
+		
+		this.oPersona=oPersona;
+		this.oCarrera=oCarrera;
+		this.fecha_inscripcion=insc;
+		
+		oPersona.addAlumno(this);
+		oCarrera.addAlumno(this);
+		
+	}
+	
+	
+	public String toString() {
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		
+		return this.oPersona.toString() + " - " + sdf.format(new Date(this.fecha_inscripcion.getTimeInMillis()));
+		
+	}
+	
+	
+}
+
+
+public class Carrera {
+
+	private String nombre;
+	private Facultad oFacultad;
+	private Collection<Alumno> cAlumnos;
+	
+	public Carrera(String nombre, Facultad oFacultad) {
+		
+		this.nombre=nombre;
+		this.oFacultad=oFacultad;
+		this.cAlumnos = new Vector<Alumno>();
+		
+		oFacultad.addCarrera(this);
+		
+	}
+	
+	public void addAlumno(Alumno oAlumno) {
+		this.cAlumnos.add(oAlumno);
+	}
+	
+	public String toString() {
+		return "Carrera: " + this.nombre;
+	}
+	
+	public void mostrarAlumnos() {
+		if (!this.cAlumnos.isEmpty()) {
+			System.out.println("Alumnos:");
+			
+			for(Alumno o : this.cAlumnos) {
+				System.out.println(o.toString());
+			}
+		}
+		
+	}
+	
+	
+	public Facultad obtenerFacultad() { return oFacultad; }
+	
+}
+
+
+public class Facultad {
+
+	private String nombre;
+	private Collection<Carrera> cCarreras;
+	
+	public Facultad(String nombre) {
+		
+		this.nombre = nombre;
+		this.cCarreras = new Vector<Carrera>();
+		
+	}
+	
+	public void addCarrera(Carrera oCarrera) {
+		this.cCarreras.add(oCarrera);
+	}
+	
+	public String toString() {
+		
+		return "Facultad: "+nombre;
+		
+	}
+	
+	public void mostrarCarrerasyAlumnos() {
+		System.out.println(this.toString());
+		
+		for(Carrera o : this.cCarreras) {
+			System.out.println(o.toString());
+			o.mostrarAlumnos();
+		}
+		
+	}
+	
+}
+
+
+public class Persona {
+
+	private String nombre;
+	private int doc;
+	private Calendar nac;
+	private Collection<Alumno> cAlumnos;
+	
+	public Persona(String nombre, int doc, Calendar nac){
+		
+		this.nombre=nombre; this.doc=doc;
+		this.nac=nac;
+		this.cAlumnos = new Vector<Alumno>();
+		
+	}
+	
+	public String toString() { return nombre; }
+	
+	int calcularEdad() {
+		
+		Calendar actual = Calendar.getInstance();
+		int edad = actual.get(Calendar.YEAR) - this.nac.get(Calendar.YEAR);
+		if (this.nac.get(Calendar.MONTH)>actual.get(Calendar.MONTH)) edad-=1;
+		
+		return edad;
+		
+	}
+	
+	public void addAlumno(Alumno oAlumno) { this.cAlumnos.add(oAlumno); }
+	
+	public void modificarNombre(String nombre) { this.nombre=nombre; } // Este método no se usa
+	
+	public int obtenerDocumento() { return this.doc; } // Este método no se usa
+	
+	
+}
+
+
+public class Main {
+
+	public static void main(String[] args) {
+		
+		Facultad oFacultad = new Facultad("FICH");
+		Carrera oCarrera1 = new Carrera("Ingeniería en Informática", oFacultad);
+		Carrera oCarrera2 = new Carrera("Ingeniería en Recursos Hídricos.", oFacultad);
+		
+		Calendar fechanac1 = Calendar.getInstance(); Calendar insc1 = Calendar.getInstance();
+		Calendar fechanac2 = Calendar.getInstance(); Calendar insc2 = Calendar.getInstance();
+		fechanac1.set(1990, 11-1, 11); fechanac2.set(1990, 12-1, 12); // Resto 1 porque calendar
+		insc1.set(2008, 12-1, 10); insc2.set(2008, 12-1, 11);	      // cuenta los meses desde cero
+
+		Persona oPersona1 = new Persona("Alumno1",11111111,fechanac1);
+		Alumno oAlumno1 = new Alumno(oPersona1, oCarrera1, insc1);
+		
+		Persona oPersona2 = new Persona("Alumno2",22222222,fechanac2);
+		Alumno oAlumno2 = new Alumno(oPersona2, oCarrera1, insc2);
+		
+		oFacultad.mostrarCarrerasyAlumnos();
+
+	}
+
+}
+
+
+
+SALIDA DE CONSOLA:
+Facultad: FICH
+Carrera: Ingeniería en Informática
+Alumnos:
+Alumno1 - 10/12/2008
+Alumno2 - 11/12/2008
+Carrera: Ingeniería en Recursos Hídricos.
