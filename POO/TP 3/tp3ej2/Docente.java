@@ -1,5 +1,14 @@
+package tp3ej2;
+
 public class Docente {
 
-    public Persona persona;
+	private Persona persona;
+
+	public Docente(Persona persona) {
+		super();
+		this.persona = persona;
+	}
+	
+	
   
 }
