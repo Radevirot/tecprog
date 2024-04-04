@@ -1,0 +1,47 @@
+@startuml Problema 5
+
+skinparam roundcorner 0
+skinparam linetype ortho
+skinparam nodesep 100
+skinparam ranksep 100
+
+class Factura{
+    -nro: int
+    -fechafact: datetime.date
+    +calcularTotal(): int
+}
+class DetalleFactura{
+    -cantidad: int
+    -calcularTotalDetalle(): int
+}
+class Cliente{
+    -nombre: str
+    -cuit: str
+}
+class Empresa{
+    -nombre: str
+}
+class Articulo{
+    -nombre: str
+    -precio: int
+    +getPrecio(): int
+}
+
+DetalleFactura "0..*" -- "1" Articulo
+Factura "0..*" -- "1" Empresa
+Factura "0..*" -- "1" Cliente
+Factura "1" -- "0..*" DetalleFactura
+
+
+@enduml
+
+
+' @startuml asd
+' class ClassA
+' class ClassB
+' class ClassC
+' ClassA -- ClassB
+' (ClassA, ClassB) .. ClassC
+
+
+' @enduml
