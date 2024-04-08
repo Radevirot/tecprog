@@ -1,0 +1,96 @@
+@startuml Problema 6
+
+skinparam roundcorner 0
+skinparam linetype polyline
+skinparam linetype ortho
+skinparam nodesep 150
+skinparam ranksep 50
+
+class Empresa{
+    -nombre: str
+    -cuit: str
+    +calcularSueldos(periodoDesde: datetime.date, periodoHasta: datetime.date): void
+}
+class Trabajador{
+    -nombre: str
+    -apellidos: str
+    -direccion: str
+    -dni: int
+    {abstract} +calcularRemuneracion(periodoDesde: datetime.date, periodoHasta: datetime.date): float
+}
+class Mensualizado
+class Categoria{
+    -tipo: str
+    -sueldo: float
+}
+class Jornalizado
+class Jefe{
+    -sueldo: float
+}
+class HorasJornal{
+    -menor40: float
+    -mayor40: float
+    -fechaDesde: datetime.date
+    -fechaHasta: datetime.date
+    +pertenecePeriodo(periodoDesde: datetime.date, periodoHasta: datetime.date): bool
+    +calcularSueldo(horasTrabajadas: float): float
+}
+class Jornada{
+    -fecha: datetime.date
+    -horas: int
+    +pertenecePeriodo(periodoDesde: datetime.date, periodoHasta: datetime.date): bool
+}
+
+
+Empresa --> "0..*" Trabajador
+Jornalizado --> "0..*" HorasJornal
+Jornalizado --> "0..*" Jornada
+Jefe "1" -- "1..*" Mensualizado
+Jefe "1" -- "1..*" Jornalizado
+Mensualizado --> "1" Categoria
+Jornalizado --|> Trabajador
+Mensualizado --|> Trabajador
+Jefe --|> Trabajador
+
+
+
+
+@enduml
+
+
+' class Factura{
+'     -nro: int
+'     -fechafact: datetime.date
+'     +calcularTotal(): int
+' }
+' class DetalleFactura{
+'     -cantidad: int
+'     -calcularTotalDetalle(): int
+' }
+' class Cliente{
+'     -nombre: str
+'     -cuit: str
+' }
+' class Empresa{
+'     -nombre: str
+' }
+' class Articulo{
+'     -nombre: str
+'     -precio: int
+'     +getPrecio(): int
+' }
+
+' DetalleFactura "0..*" -- "1" Articulo
+' Factura "0..*" -- "1" Empresa
+' Factura "0..*" -- "1" Cliente
+' Factura "1" -- "0..*" DetalleFactura
+
+' @startuml RelacionDeAsociacion
+' class ClassA
+' class ClassB
+' class ClassC
+' ClassA -- ClassB
+' (ClassA, ClassB) .. ClassC
+
+
+' @enduml
