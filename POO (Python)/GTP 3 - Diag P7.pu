@@ -1,0 +1,81 @@
+@startuml Problema 6
+
+left to right direction
+skinparam roundcorner 0
+skinparam linetype ortho
+skinparam nodesep 50
+skinparam ranksep 20
+
+
+class Concesionaria{
+    -nombre: str
+    +calcularVentasAutosNacUsados(): void
+}
+
+class Vehiculo{
+    -marca: str
+    -modelo: str
+    -patente: str
+    -precio: float
+    -kilometraje: int
+    +esAutoNacional(): bool
+    +esUsado(): bool
+}
+
+class Moto{
+
+}
+
+class Auto{
+    +esNacional(): bool
+}
+
+class Pais{
+    -nombre: str
+}
+
+class Camioneta{
+
+}
+
+class DetalleVenta{
+    -precio: float
+    +esUsadoYNac(): bool
+
+}
+
+class Venta{
+    -fecha: datetime.date
+    +esVentaAutoNac(): bool
+    +getAutosUsadosNac(): List
+}
+
+class Persona{
+    -nombre: str
+    -apellido: str
+}
+
+class Comprador{
+    -dni: str
+}
+
+class Duenio{
+    -telefono: str
+}
+
+
+Concesionaria --> "0..*" Venta
+Concesionaria --> "0..*" Vehiculo
+Moto --|> Vehiculo
+Auto --|> Vehiculo
+Camioneta --|> Vehiculo
+Auto --> "1" Pais
+Vehiculo --> "0..1" Duenio
+Vehiculo "1..*" -- "1" Venta
+(Vehiculo, Venta) .. DetalleVenta
+Comprador --|> Persona
+Duenio --|> Persona
+
+
+
+@enduml

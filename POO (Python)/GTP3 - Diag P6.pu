@@ -1,5 +1,6 @@
 @startuml Problema 6
 
+
 skinparam roundcorner 0
 skinparam linetype polyline
 skinparam linetype ortho
@@ -19,14 +20,16 @@ class Trabajador{
     {abstract} +calcularRemuneracion(periodoDesde: datetime.date, periodoHasta: datetime.date): float
 }
 class Mensualizado
+class Jornalizado
+
+class Jefe{
+    -sueldo: float
+}
 class Categoria{
     -tipo: str
     -sueldo: float
 }
-class Jornalizado
-class Jefe{
-    -sueldo: float
-}
+
 class HorasJornal{
     -menor40: float
     -mayor40: float
