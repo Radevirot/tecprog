@@ -1,0 +1,69 @@
+@startuml P10
+
+
+skinparam roundcorner 0
+skinparam linetype polyline
+skinparam linetype ortho
+skinparam nodesep 70
+skinparam ranksep 90
+
+class Carrera {
+    - nombre: int
+    +listar_alumnos(catedra: Catedra): void
+}
+
+class Alumno {
+    - fecha_ingreso: datetime
+    - fecha_egreso: datetime
+    + mostrar(): void
+}
+
+class Docente{
+    -titulo: string
+}
+
+class Universidad{
+    - nombre: string
+    +listar_alumnos(catedra: Catedra): void
+}
+
+class Comision{
+    - nombre: string
+    - fecha_inicio: datetime
+    + listar_alumnos() :void
+}
+
+
+class Tipo{
+    - nombre: string
+}
+
+class Persona{
+    - nombre: string
+}
+
+class Catedra {
+    - nombre: string
+    + listar_alumnos(): void
+}
+
+class Examen {
+    - nota: int
+    - fecha: datetime
+    + obtener_alumno(): Alumno
+}
+
+
+
+Carrera "0..*" -- "0..*" Alumno
+Alumno "0..*" - "0..*" Comision
+(Alumno, Comision) .. Examen
+Carrera "0..*" <- Universidad
+Comision "0..*" <- Catedra
+Comision -> "1" Docente
+Examen -> "1" Tipo
+Carrera --> "0..*" Catedra
+Alumno --|> Persona
+Docente --|> Persona
+
+@enduml
