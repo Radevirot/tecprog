@@ -1,0 +1,62 @@
+@startuml Problema 12
+
+'left to right direction
+skinparam roundcorner 0
+skinparam linetype ortho
+'skinparam nodesep 70
+'skinparam ranksep 20
+
+
+class Banco{
+- nombre: string
++ listarComisiones(periodo: datetime): void
+}
+
+
+class Titular{
+- nombre: string
+- apellido: string
+- cuil: string
+}
+
+
+class Cuenta{
+- nro_cuenta: string
++ calcularComision(periodo: datetime): float
+- obtenerSumatoriaTransacciones(periodo: datetime): float
+- obtenerCantidadTransacciones(periodo: datetime): int
++ verDatos(): float
+}
+
+
+class Transaccion{
+- fecha: datetime
+- tipo_transaccion: string
++ pertenecePeriodo(periodo: datetime): bool
++ obtenerValorMontoPesos(): float
+}
+
+
+class Monto{
+- valor: float
++ convertirAPesos(): float
+}
+
+
+class Moneda{
+- tipo: string
+- cotizacion: float
++ convertirAPeso(monto: float): float
+}
+
+
+
+
+Banco -> "0..*" Cuenta
+Cuenta -> "1" Titular
+Cuenta --> "0..*" Transaccion
+Transaccion --> "0..1" Monto
+Monto -> "1" Moneda
+
+
+@enduml
