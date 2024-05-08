@@ -1,0 +1,1 @@
+(define area (lambda (radio) (* pi (* radio radio))))

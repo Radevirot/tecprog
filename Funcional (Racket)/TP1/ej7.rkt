@@ -1,0 +1,1 @@
+(define mascorta (lambda (L1 L2) (if (<= (length L1) (length L2)) L1 L2)))

@@ -1,0 +1,2 @@
+(let ((x 9))(* x(let ((x (/ x 3)))(+ x x))))
+;el primer let le asigna 9 a la variable X, y hace una multiplicación de X con un let que modifica el valor de X a X/3, que sería 3 y luego coloca X+X, que si consideramos que X ahora es 3 resulta en 6, por lo que la multiplicación final es de 9*6 y equivale a 54.
