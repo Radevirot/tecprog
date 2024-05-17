@@ -1,0 +1,5 @@
+
+(define subst (lambda (in out ls) (if (null? ls) '() (if (equal? in (car ls)) (cons out (subst in out (cdr ls))) (cons (car ls) (subst in out (cdr ls))) ))))
+
+
+(subst 'c 'k '( c o c o n u t))

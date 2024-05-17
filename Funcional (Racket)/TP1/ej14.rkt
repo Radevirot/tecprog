@@ -1,0 +1,1 @@
+(define concatenar (lambda (ls1 ls2) (if (null? ls2) (if (null? ls1) '() () ) (concatenar (cdr ls1) ls2) )))
