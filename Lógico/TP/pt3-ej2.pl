@@ -46,13 +46,77 @@ suma_lista([Elem1|Cola1], [Elem2|Cola2], [Suma|Cola3]) :- Suma is Elem1+Elem2, s
 
 % EJERCICIO 7
 
-eliminar_dup_desordenado([],[]). %condición de corte.
-eliminar_dup_desordenado([Elem|Cola1],SinDup) :- miembro(Elem,Cola1), eliminar_dup_desordenado(Cola1,SinDup).
-eliminar_dup_desordenado([Elem|Cola1],[Elem|Cola2]) :- \+ miembro(Elem,Cola1), eliminar_dup_desordenado(Cola1,Cola2).   % \+ es "not"
+eliminar_dup([],[]). %condición de corte.
+eliminar_dup([Elem|Cola1],SinDup) :- miembro(Elem,Cola1), eliminar_dup(Cola1,SinDup).
+eliminar_dup([Elem|Cola1],[Elem|Cola2]) :- \+ miembro(Elem,Cola1), eliminar_dup(Cola1,Cola2).   % \+ es "not"
 
-eliminar(_, [], []).
-eliminar(Elem,[Elem|Cola1], NewList) :- eliminar(Elem,Cola1,NewList).
-eliminar(Elem,[X|Cola1], [X|Cola2]) :- Elem\=X, eliminar(Elem,Cola1,Cola2).
+% EJERCICIO 8
+%mayor(X1, X2, X1):- X1 >= X2.
+%mayor(X1, X2, X2):- X1 < X2.
 
-eliminar_dup([],[]).
-eliminar_dup([Elem|Cola1],[Elem|Cola2]) :- eliminar(Elem,Cola1,Cola2). %deja un duplicado?
+%profundidad([], 0). %rama vacia
+%profundidad([_], 1). %hoja
+%profundidad([I, _, D], P):- profundidad(I, PI), profundidad(D, PD), 
+%    mayor(PI, PD, PAux), P is PAux + 1. %comparo subarbol izq y subarbol der recursivamente, sumo 1 cuando entro.
+
+% EJERCICIO 9
+insertar_ordenado(Elem, [], [Elem]). %si debo insertar el elemento en una lista vacía, lo inserto directamente, condición de corte.
+insertar_ordenado(Elem, [Cabeza1|Cola1], [Elem|[Cabeza1|Cola1]]):- Elem < Cabeza1. %cuando encuentro la cabeza "posterior" a mi elemento, inserto el elemento en frente de toda la lista y corto.
+insertar_ordenado(Elem, [Cabeza1|Cola1], [Cabeza1|Cola2]):- Elem >= Cabeza1, insertar_ordenado(Elem, Cola1, Cola2). %si no, sigo buscando en las colas de las listas.
+
+% EJERCICIO 10
+ordenar([],[]). %una lista vacía ordenada es una lista vacía.
+ordenar([Cabeza|Cola], ListaOrdenada):- ordenar(Cola,ListaAuxiliar), insertar_ordenado(Cabeza,ListaAuxiliar,ListaOrdenada).
+
+% EXPLICACIÓN DE LA RECURSIÓN
+%El proceso de inserción en la lista auxiliar se realiza de tal manera que se mantiene el orden de los elementos:
+
+%La consulta inicial es ordenar([2, 4, 3, 1], ListaOrdenada).
+%Se separa la lista en Cabeza = 2 y Cola = [4, 3, 1].
+%Se llama a ordenar(Cola, ListaAuxiliar) para ordenar la Cola.
+%Ahora, ordenar([4, 3, 1], ListaAuxiliar) se convierte en la nueva consulta.
+%Este proceso se repite, separando la Cabeza y la Cola y llamando a ordenar en la Cola más pequeña.
+%Eventualmente, se llega al caso base ordenar([], ListaAuxiliar), que devuelve una lista vacía.
+%Ahora, con cada retorno de la recursión, se llama a insertar_ordenado para colocar la Cabeza en la posición correcta dentro de la ListaAuxiliar que ya está ordenada.
+
+
+
+% 11 y 12 robados
+
+%EJERCICIO 11 - aplanar lista
+concatenar([], L, L). %caso base, la lista está vacía
+concatenar([X|L1], L2, [X|L3]):- concatenar(L1, L2, L3).%concatena el 1er elem de L1 con la concatenación del resto
+
+aplanar([], []). %caso base, la lista está vacía
+%si el 1er elem es una lista lo aplana, aplana el resto de la lista y concatena
+aplanar([X|L1], L2):- aplanar(X, L3), aplanar(L1, L4),concatenar(L3, L4, L2).
+aplanar(X, [X]).%caso base si X no es una lista
+%aplanar([1, [2, [3]]], ListaPlana). -> ListaPlana = [1, 2, 3]
+
+%EJERCICIO 12 - permutaciones
+ins(X, L, [X | L]). %inserta X al principio de L 
+ins(X, [Y | L1], [Y | L2]) :- ins(X, L1, L2). %inserta X en la cola L1 recursivamente y lo asigna a L2
+
+per([], []).%caso base, la permutación de la lista vacía es la misma lista
+per([X | L], Lp) :- per(L, L1), ins(X, L1, Lp). %genera permutaciones de la cola de L y las inserta en L1, inserta X en todas las posiciones de L1
+
+%El codigo genera todas las permutaciones posibles de una lista, es decir, las
+%combinaciones teniendo en cuenta el orden. Para eso usa la función insertar recursivamente
+%%y permutar recursivamente, insertando los elementos y asignandolos a la lista resultante:
+%L = [1, 2, 3]
+%L = [2, 1, 3]
+%L = [2, 3, 1]
+%L = [1, 3, 2]
+%L = [3, 1, 2]
+%L = [3, 2, 1]
+
+
+%---------- PROLOG ----------
+/*
+Paradigma declarativo - QUÉ
+- Base de conocimientos - Hechos
+- Motor de inferencia - Reglas
+- Resolución - Preguntas
+- Lógica + Control = PROGRAMA
+- Búsqueda de soluciones: Unificación - Backtracking (corte, fail)
+*/
